@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Twitter</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="main.js"></script>
+  <style>
+      .center {
+          margin: 0;
+          position: absolute;
+          left: 50%;
+          -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+      }
+      .division
+      {
+          background-color: pink;
+      }
+      .heading
+      {
+          font-size: 40px;
+      }
+      .box:nth-of-type(odd) {
+          background-color: #e8f5fd;
+      }
+      .box:nth-of-type(even) {
+          background-color: #e9e9e9;
+      }
+      .sizeofimage
+      {
+          height: 180px;
+      }
+      .content
+      {
+          text-indent: 200px;
+          font-size: 15px;
+          padding: 5px;
+      }
+      .content1
+      {
+          text-indent: 380px;
+          color: hotpink;
+          font-size: 20px;
+      }
+  </style>
+</head>
+<body>
+<div align="center" class="heading"> <h1><I> Welcome to Twitter TimeLine!!!</I></h1></div>
+<div class="center"> <button   value = "button" class="division" onclick="getTimeLine()">GETTIMELINE</button></div>
+<div id="tweetSection" style="margin-bottom: 2.5rem; border: 2px solid black; border-width: 2.5px"></div>
+<script>
+    function getTimeLine() {
+        $(document).ready(function() {
+            jQuery.ajax({
+                url: "http://localhost:8080/twitter/gettimeline",
+                type: "GET",
+                success: function(result) {
+                    console.log(result);
+                    const tweets = result;
+                    document.getElementById('tweetSection').innerHTML = tweets.map(tweet =>
+                        `<div class="box" >
+                         <div onclick="location.href='https://twitter.com/${tweet.screenName}/status/${tweet.id}';" >
+                         <img class="sizeofimage" src="${tweet.profileImageUrl}" align="left" />
+                         <div class="content"> <B>Name:</B>${tweet.name}<br></div>
+                         <div class="content"><B>Message:</B>${tweet.txt}<br></div>
+                         <div class="content"><B>CreatedAt:</B>${tweet.createdAt}<br></div>
+                         <div class="content"><B>Id:</B>${tweet.id}<br></div>
+                         <div class="content"><B>ProfileImageUrl:</B>${tweet.profileImageUrl}<br></div>
+                         <div class="content"><B>ScreenName:</B>${tweet.screenName}<br></div>
+                         <br>
+                         <div class="content1"><B><a href="https://twitter.com/${tweet.screenName}"> </B>Click here to view profile</a></div>
+                         <br><br></div>
+                         </div>`
+                    ).join("")
+                },
+                error: function(error) {
+                    document.getElementById('tweetSection').innerHTML = 'error';
+                }
+            });
+        });
+    }
+</script>
+</body>
+</html>
