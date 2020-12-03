@@ -1,14 +1,44 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <title>Twitter</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="axios.js"></script>
+
 </head>
 <body>
-<p>Hello World</p>
-<button onclick="submitFunction()">Submit</button>
+<h1><b>Welcome to Twitter TimeLine!!!</b></h1>
+<button value = "button" onclick="hlo()">GET</button>
+<div class="container" style="min-height: 100vh">
+    <div id="tweetSection" style="margin-bottom: 2.5rem; border: 2px solid greenyellow"></div>
+</div>
 <script>
-    function submitFunction() {
-        alert("Hello World");
+    function hlo() {
+        $(document).ready(function() {
+            jQuery.ajax({
+                url: "http://localhost:8080/twitter/gettimeline",
+                type: "GET",
+                success: function(result) {
+                    console.log(result);
+                    const tweets = result;
+                    document.getElementById('tweetSection').innerHTML = tweets.map(tweet =>
+                        `<div>
+                          <div>Name:${tweet.name}</div>
+                          <div>Message:${tweet.txt}</div>
+                          <div>CreatedAt:${tweet.createdAt}</div>
+                          <div>Id:${tweet.id}</div>
+                          <div>ProfileImageUrl:${tweet.profileImageUrl}</div>
+                          <div>ScreenName:${tweet.screenName}<br></div>
+                        </div>`
+                    ).join(',')
+                },
+                error: function(error) {
+                    document.getElementById('tweetSection').innerHTML = 'error';
+                }
+            });
+        });
     }
 </script>
 </body>
 </html>
-
